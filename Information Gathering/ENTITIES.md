@@ -44,3 +44,21 @@
 |  image_url |  Simple,	not null |  - |
 |  album_length |  Simple,	not null |  - |
 |  number_of_likes |  Simple,	not null |  - |
+
+
+  # 4. LikedSong
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| id  |  Unique, not null  |  Primary Key |
+| username  |  Simple, not null | -  |
+|  song_id |  Simple,	not null |  - |
+
+
+  # 5. LikedAlbum
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| id  |  Unique, not null  |  Primary Key |
+| username  |  Simple, not null | -  |
+|  album_id |  Simple,	not null |  - |
+
+
