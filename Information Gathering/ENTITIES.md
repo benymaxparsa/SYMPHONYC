@@ -13,11 +13,22 @@
   <br />
   
 
-  ## 1. User
+  # 1. User
 |  Attribute name  | type  | role  |
 |---|:-:|---|
 | Username  |  Unique, not null  |  Primary Key |
 | Name  |  Simple, not null | -  |
-| last_played_song  |  Simple, not null | -  |
+| last_played_song  |  Simple, nullable | -  |
 |  Image_url |  Simple,	not null |  - |
 |  Password |  Simple,	not null |  - |
+
+  # 2. Song
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| song_id  |  Unique, not null  |  Primary Key |
+| title  |  Simple, not null | -  |
+| artist |  Multivalued, not null | -  |
+|  album |  Simple,	not null |  - |
+|  song_url |  Simple,	not null |  - |
+|  length |  Simple,	not null |  - |
+|  number_of_times_played |  Simple,	not null |  - |
