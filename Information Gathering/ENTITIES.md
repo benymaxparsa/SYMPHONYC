@@ -32,3 +32,15 @@
 |  song_url |  Simple,	not null |  - |
 |  length |  Simple,	not null |  - |
 |  number_of_times_played |  Simple,	not null |  - |
+
+
+  # 3. Album
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| album_id  |  Unique, not null  |  Primary Key |
+| title  |  Simple, not null | -  |
+| artist |  Multivalued, not null | -  |
+|  release_date |  Simple,	not null |  - |
+|  image_url |  Simple,	not null |  - |
+|  album_length |  Simple,	not null |  - |
+|  number_of_likes |  Simple,	not null |  - |
