@@ -62,3 +62,32 @@
 |  album_id |  Simple,	not null |  - |
 
 
+  # 6. FavoriteArtist
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| id  |  Unique, not null  |  Primary Key |
+| username  |  Simple, not null | -  |
+|  artist_username |  Simple,	not null |  - |
+
+
+  # 7. Artist
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| username  |  Unique, not null  |  Primary Key |
+| name  |  Simple, not null | -  |
+| social_media_url |  Multivalued, not null | -  |
+|  number_of_monthly_listeners |  Simple,	not null |  - |
+|  image_url |  Simple,	not null |  - |
+|  rank |  Simple,	not null |  - |
+
+
+  # 8. Playlist
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| playlist_id  |  Unique, not null  |  Primary Key |
+| title  |  Simple, not null | -  |
+| creator_username |  Simple, not null | -  |
+|  description |  Simple,	not null |  - |
+|  image_url |  Simple,	not null |  - |
+|  number_of_followers |  Simple,	not null |  - |
+
