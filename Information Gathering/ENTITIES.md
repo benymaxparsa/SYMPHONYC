@@ -27,8 +27,8 @@
 |---|:-:|---|
 | song_id  |  Unique, not null  |  Primary Key |
 | title  |  Simple, not null | -  |
-| artist |  Multivalued, not null | -  |
-|  album |  Simple,	not null |  - |
+| artist |  Unique, Multivalued, not null | -  |
+|  album |  Unique,	not null |  - |
 |  song_url |  Simple,	not null |  - |
 |  length |  Simple,	not null |  - |
 |  number_of_times_played |  Simple,	not null |  - |
@@ -39,7 +39,7 @@
 |---|:-:|---|
 | album_id  |  Unique, not null  |  Primary Key |
 | title  |  Simple, not null | -  |
-| artist |  Multivalued, not null | -  |
+| artist |  Unique, Multivalued, not null | -  |
 |  release_date |  Simple,	not null |  - |
 |  image_url |  Simple,	not null |  - |
 |  album_length |  Simple,	not null |  - |
@@ -50,24 +50,24 @@
 |  Attribute name  | type  | role  |
 |---|:-:|---|
 | id  |  Unique, not null  |  Primary Key |
-| username  |  Simple, not null | -  |
-|  song_id |  Simple,	not null |  - |
+| username  |  Unique, not null | -  |
+|  song_id |  Unique,	not null |  - |
 
 
   # 5. LikedAlbum
 |  Attribute name  | type  | role  |
 |---|:-:|---|
 | id  |  Unique, not null  |  Primary Key |
-| username  |  Simple, not null | -  |
-|  album_id |  Simple,	not null |  - |
+| username  |  Unique, not null | -  |
+|  album_id |  Unique,	not null |  - |
 
 
   # 6. FavoriteArtist
 |  Attribute name  | type  | role  |
 |---|:-:|---|
 | id  |  Unique, not null  |  Primary Key |
-| username  |  Simple, not null | -  |
-|  artist_username |  Simple,	not null |  - |
+| username  |  Unique, not null | -  |
+|  artist_username |  Unique,	not null |  - |
 
 
   # 7. Artist
@@ -75,7 +75,7 @@
 |---|:-:|---|
 | username  |  Unique, not null  |  Primary Key |
 | name  |  Simple, not null | -  |
-| social_media_url |  Multivalued, not null | -  |
+| social_media_url |  Multivalued, nullable | -  |
 |  number_of_monthly_listeners |  Simple,	not null |  - |
 |  image_url |  Simple,	not null |  - |
 |  rank |  Simple,	not null |  - |
@@ -86,8 +86,31 @@
 |---|:-:|---|
 | playlist_id  |  Unique, not null  |  Primary Key |
 | title  |  Simple, not null | -  |
-| creator_username |  Simple, not null | -  |
-|  description |  Simple,	not null |  - |
+| creator_username |  Unique, not null | -  |
+|  description |  Simple,	nullable |  - |
 |  image_url |  Simple,	not null |  - |
 |  number_of_followers |  Simple,	not null |  - |
 
+
+  # 9. PlaylistSong
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| id  |  Unique, not null  |  Primary Key |
+| playlist_id  |  Unique, not null | -  |
+|  song_id |  Unique,	not null |  - |
+
+
+  # 10. FollowedPlaylist
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| id  |  Unique, not null  |  Primary Key |
+| follower_username  |  Unique, not null | -  |
+|  playlist_id |  Unique,	not null |  - |
+
+
+  # 11. FollowedUsers
+|  Attribute name  | type  | role  |
+|---|:-:|---|
+| id  |  Unique, not null  |  Primary Key |
+| follower_username  |  Unique, not null | -  |
+|  following_username |  Unique,	not null |  - |
