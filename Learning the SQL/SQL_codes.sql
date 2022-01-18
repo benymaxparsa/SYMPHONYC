@@ -93,3 +93,61 @@ DELETE FROM Students1
 	WHERE sid = 97779081
 	
 
+-- SELECT
+
+SELECT (sid, age) FROM Students1
+	WHERE sid > 100
+	ORDER BY age DESC
+
+-- BANK EXAMPLE
+
+CREATE TABLE "Bank".Branch(
+	branch_name VARCHAR(50),
+	branch_city VARCHAR(50),
+	assets VARCHAR(50),
+	CONSTRAINT Branch_PK PRIMARY KEY (branch_name)
+);
+
+ALTER TABLE "Bank".Branch
+ALTER COLUMN assets TYPE INTEGER
+USING assets::integer;
+
+CREATE TABLE "Bank".Account(
+	account_number INTEGER,
+	branch_name VARCHAR(50),
+	balance DECIMAL,
+	CONSTRAINT Account_PK PRIMARY KEY (account_number),
+	CONSTRAINT Account_FK FOREIGN KEY (branch_name) REFERENCES "Bank".Branch (branch_name)
+)
+
+CREATE TABLE "Bank".Loan(
+	loan_number INTEGER,
+	branch_name VARCHAR(50),
+	amount DECIMAL,
+	CONSTRAINT Loan_PK PRIMARY KEY (loan_number),
+	CONSTRAINT Loan_FK FOREIGN KEY (branch_name) REFERENCES "Bank".Branch (branch_name)
+);
+
+CREATE TABLE "Bank".Customer(
+	customer_name VARCHAR(50),
+	customer_street VARCHAR(50),
+	customer_city VARCHAR(50),
+	CONSTRAINT Customer_PK PRIMARY KEY (customer_name)
+);
+
+CREATE TABLE "Bank".Depositor(
+	customer_name VARCHAR(50),
+	account_number INTEGER,
+	CONSTRAINT Depositor_PK PRIMARY KEY (customer_name, account_number),
+	CONSTRAINT Depositor_FK1 FOREIGN KEY (customer_name) REFERENCES "Bank".Customer (customer_name),
+	CONSTRAINT Depositor_FK2 FOREIGN KEY (account_number) REFERENCES "Bank".Account (account_number)
+);
+
+CREATE TABLE "Bank".Borrower(
+	customer_name VARCHAR(50),
+	loan_number INTEGER,
+	CONSTRAINT Borrower_PK PRIMARY KEY (customer_name, loan_number),
+	CONSTRAINT Borrower_FK1 FOREIGN KEY (customer_name) REFERENCES "Bank".Customer (customer_name),
+	CONSTRAINT Borrower_FK2 FOREIGN KEY (loan_number) REFERENCES "Bank".Loan (loan_number)
+);
+
