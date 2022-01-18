@@ -411,6 +411,39 @@ CREATE TABLE sailor.Reservations(
 	CONSTRAINT Reservations_FK2 FOREIGN KEY (bid) REFERENCES sailor.Boats(bid)
 );
 
+--- SET OPERATIONS: Part 2
+
+SELECT DISTINCT R.sid, S.sname
+	FROM sailor.Sailors S, sailor.Boats B, sailor.Reservations R
+	WHERE S.sid = R.sid AND B.bid = R.bid AND B.color IN ('red', 'green');
+	
+
+SELECT R.sid
+	FROM sailor.Boats B, sailor.Reservations R
+	WHERE B.bid = R.bid AND B.color IN ('red', 'green');
+
+SELECT R.sid
+	FROM sailor.Boats B, sailor.Reservations R
+	WHERE B.bid = R.bid AND B.color = 'red'
+	UNION
+	SELECT R.sid
+		FROM sailor.Boats B, sailor.Reservations R
+		WHERE B.bid = R.bid AND B.color = 'green'
+		
+		
+SELECT R1.sid
+	FROM sailor.Boats B1, sailor.Reservations R1, sailor.Boats B2, sailor.Reservations R2
+	WHERE B1.bid = R1.bid AND B2.bid = R2.bid
+	AND (B1.color = 'red' AND B2.color = 'green');	
+	
+
+SELECT R.sid
+	FROM sailor.Boats B, sailor.Reservations R
+	WHERE B.bid = R.bid AND B.color = 'red'
+	INTERSECT
+	SELECT R.sid
+		FROM sailor.Boats B, sailor.Reservations R
+		WHERE B.bid = R.bid AND B.color = 'green';
 
 
 
