@@ -262,5 +262,54 @@ SELECT amount*100 as "خخخخ", 'lol' as what_ever
 	FROM "Bank".loan
 	ORDER BY amount ASC;
 
+-- where
 
+SELECT loan_number
+	FROM "Bank".loan
+	WHERE branch_name = 'Azadi' AND amount > 25;
+
+SELECT loan_number
+	FROM "Bank".loan
+	WHERE amount BETWEEN 40 AND 80;
+
+SELECT account_number, balance
+	FROM "Bank".account
+	WHERE branch_name = 'Safa' and balance BETWEEN 54 and 100;
+
+
+-- Strings
+
+SELECT *
+	FROM "Bank".customer
+	WHERE customer_city LIKE '_afsan%';
+
+SELECT *
+	FROM "Bank".customer
+	WHERE customer_city LIKE 'S%_ja%';
+
+SELECT customer_name as "نام مشتری", customer_city||', '||customer_street as "آدرس"
+	FROM "Bank".customer
+	WHERE customer_city LIKE '%ja%';
+
+
+-- the from clause
+
+SELECT COUNT(*)
+	FROM "Bank".borrower;
+
+SELECT COUNT(*)
+	FROM "Bank".loan;
+
+SELECT *
+	FROM "Bank".borrower, "Bank".loan;
+
+SELECT customer_name, borrower.loan_number, amount
+	FROM "Bank".borrower, "Bank".loan
+	WHERE borrower.loan_number = loan.loan_number AND branch_name = 'Pirouzi';
+	
+
+	
+	
+	
+	
 
