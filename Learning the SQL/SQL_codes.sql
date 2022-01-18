@@ -385,6 +385,36 @@ SELECT sid FROM university.enrolled WHERE cid = '1413056'
 	SELECT sid FROM university.enrolled WHERE cid = '1413059';
 
 
+-- Adding the sailor schema
+
+CREATE TABLE sailor.Boats(
+	bid CHARACTER VARYING(50),
+	bname CHARACTER VARYING(50),
+	color CHARACTER VARYING(50),
+	CONSTRAINT Boats_PK PRIMARY KEY (bid)
+);
+
+CREATE TABLE sailor.Sailors(
+	sid CHARACTER VARYING(50),
+	sname CHARACTER VARYING(50),
+	rating INTEGER,
+	age DOUBLE PRECISION,
+	CONSTRAINT Sailors_PK PRIMARY KEY (sid)
+);
+
+CREATE TABLE sailor.Reservations(
+	sid CHARACTER VARYING(50),
+	bid CHARACTER VARYING(50),
+	day DATE,
+	CONSTRAINT Reservations_PK PRIMARY KEY (sid, bid, day),
+	CONSTRAINT Reservations_FK1 FOREIGN KEY (sid) REFERENCES sailor.Sailors(sid),
+	CONSTRAINT Reservations_FK2 FOREIGN KEY (bid) REFERENCES sailor.Boats(bid)
+);
+
+
+
+
+
 
 
 
