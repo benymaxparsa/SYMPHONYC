@@ -445,8 +445,79 @@ SELECT R.sid
 		FROM sailor.Boats B, sailor.Reservations R
 		WHERE B.bid = R.bid AND B.color = 'green';
 
+-------------------------------EMPLOYEE DATABASE----------------------------
+
+DROP TABLE IF EXISTS employee.Employee;
+CREATE TABLE employee.Employee(
+	Fname CHARACTER VARYING(50),
+	Minit CHAR,
+	Lname CHARACTER VARYING(50),
+	SSN CHARACTER VARYING(50),
+	Bdate DATE,
+	Address CHARACTER VARYING(100),
+	Sex CHAR,
+	Salary BIGINT,
+	SupperSSN CHARACTER VARYING(50),
+	DNO INTEGER,
+	CONSTRAINT Employee_PK PRIMARY KEY (SSN),
+	CONSTRAINT Employee_FK1 FOREIGN KEY (SupperSSN) REFERENCES employee.Employee (SSN),
+	CONSTRAINT Employee_FK2 FOREIGN KEY (DNO) REFERENCES employee.Department (Dnumber)
+);
+
+DROP TABLE IF EXISTS employee.Project;
+CREATE TABLE employee.Project(
+	Pname CHARACTER VARYING(50),
+	Pnumber INTEGER,
+	Plocation CHARACTER VARYING(50),
+	Dnum INTEGER,
+	CONSTRAINT Project_PK PRIMARY KEY (Pnumber),
+	CONSTRAINT Employee_FK FOREIGN KEY (Dnum) REFERENCES employee.Department (Dnumber)
+	);
+
+DROP TABLE IF EXISTS employee.Works_on;
+CREATE TABLE employee.Works_on(
+	ESSN CHARACTER VARYING(50),
+	PNO INTEGER,
+	hours DOUBLE PRECISION,
+	CONSTRAINT Works_on_PK PRIMARY KEY (ESSN, PNO),
+	CONSTRAINT Works_on_FK1 FOREIGN KEY (ESSN) REFERENCES employee.Employee (SSN),
+	CONSTRAINT Works_on_FK2 FOREIGN KEY (PNO) REFERENCES employee.Project (Pnumber)
+	);
+
+DROP TABLE IF EXISTS employee.Department;
+CREATE TABLE employee.Department(
+	Dname CHARACTER VARYING(50),
+	Dnumber INTEGER,
+	MgrSSN CHARACTER VARYING,
+	MgrStartDate DATE,
+	CONSTRAINT Department_PK PRIMARY KEY (Dnumber)
+	);
+	
+DROP TABLE IF EXISTS employee.Dep_location;
+CREATE TABLE employee.Dep_location(
+	Dnumber INTEGER,
+	Dlocation CHARACTER VARYING(50),
+	CONSTRAINT Dep_location_PK PRIMARY KEY (Dnumber),
+	CONSTRAINT Dep_location_FK FOREIGN KEY (Dnumber) REFERENCES employee.Department (Dnumber)
+	);
+	
+DROP TABLE IF EXISTS employee.Dependent;
+CREATE TABLE employee.Dependent(
+	ESSN CHARACTER VARYING(50),
+	dependent_name CHARACTER VARYING(50),
+	Sex CHAR,
+	Bdate DATE,
+	Relationship CHARACTER VARYING(50),
+	CONSTRAINT Dependent_PK PRIMARY KEY (ESSN),
+	CONSTRAINT Dependent_FK FOREIGN KEY (ESSN) REFERENCES employee.Employee (SSN)
+);
+
+----------------------------------- JOIN ----------------------------------
 
 
+SELECT name, cid, grade
+	FROM university.students S, university.enrolled E
+	WHERE S.sid = E.sid;
 
 
 
