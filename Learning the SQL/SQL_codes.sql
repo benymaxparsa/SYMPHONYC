@@ -151,3 +151,73 @@ CREATE TABLE "Bank".Borrower(
 	CONSTRAINT Borrower_FK2 FOREIGN KEY (loan_number) REFERENCES "Bank".Loan (loan_number)
 );
 
+-- EXAMINE SELECT BETTER 
+
+SELECT customer_name from "Bank".customer 
+	where customer_city = 'Shiraz';
+	
+SELECT customer_name
+	FROM "Bank".customer
+	where customer_city = 'Shiraz'
+	ORDER BY customer_name DESC;
+
+
+SELECT (customer_name, customer_street)
+	FROM "Bank".customer
+	where customer_city = 'Shiraz'
+	ORDER BY customer_name ASC, customer_street DESC;
+
+-- ADD THE UNIVERSITY SCHEMA
+
+CREATE TABLE "university".Lecturers(
+	empid CHARACTER VARYING(50),
+	name CHARACTER VARYING(50),
+	room CHARACTER VARYING(50),
+	CONSTRAINT Lecturers_PK PRIMARY KEY (empid)
+);
+
+CREATE TABLE "university".Students(
+	sid CHARACTER VARYING(50),
+	name CHARACTER VARYING(50),
+	phone CHARACTER VARYING(50),
+	address CHARACTER VARYING(50),
+	email CHARACTER VARYING(50),
+	birthdate DATE,
+	country CHARACTER VARYING(50),
+	CONSTRAINT Students_PK PRIMARY KEY (sid)
+);
+
+ALTER TABLE "university".Students
+	ALTER COLUMN country TYPE CHARACTER VARYING(100);
+	
+CREATE TABLE "university".Courses(
+	cid CHARACTER VARYING(50),
+	title CHARACTER VARYING(50),
+	credit INTEGER,
+	lecturer CHARACTER VARYING(50),
+	CONSTRAINT Courses_PK PRIMARY KEY (cid),
+	CONSTRAINT Courses_FK FOREIGN KEY (lecturer) REFERENCES "university".Lecturers (empid)
+);
+
+CREATE TABLE "university".Enrolled(
+	sid CHARACTER VARYING(50),
+	cid CHARACTER VARYING(50),
+	grade CHAR,
+	CONSTRAINT Enrolled_PK PRIMARY KEY (cid, sid),
+	CONSTRAINT Enrolled_FK1 FOREIGN KEY (sid) REFERENCES "university".Students (sid),
+	CONSTRAINT Enrolled_FK2 FOREIGN KEY (cid) REFERENCES "university".Courses (cid)
+);
+
+DROP TABLE IF EXISTS "university".Assessment;
+
+CREATE TABLE "university".Assessment(
+	sid CHARACTER VARYING(50),
+	cid CHARACTER VARYING(50),
+	empid CHARACTER VARYING(50),
+	mark DOUBLE PRECISION,
+	CONSTRAINT Assessment_PK PRIMARY KEY (cid, sid),
+	CONSTRAINT Assessment_FK1 FOREIGN KEY (sid) REFERENCES "university".Students (sid),
+	CONSTRAINT Assessment_FK2 FOREIGN KEY (cid) REFERENCES "university".Courses (cid),
+	CONSTRAINT Assessment_FK3 FOREIGN KEY (empid) REFERENCES "university".Lecturers (empid)
+);
+
