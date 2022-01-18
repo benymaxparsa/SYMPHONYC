@@ -55,3 +55,41 @@ CREATE TABLE Enroll (
 );
 
 SELECT * FROM Enroll;
+
+-- Referential integrity in SQL
+
+DROP TABLE IF EXISTS Enroll;
+CREATE TABLE Enroll (
+	sid INTEGER,
+	cid CHAR(8),
+	CONSTRAINT Enroll_FK1 FOREIGN KEY (sid) REFERENCES Students1 (sid)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+	CONSTRAINT Enroll_FK2 FOREIGN KEY (cid) REFERENCES Courses (cid)
+		ON DELETE SET NULL
+		ON UPDATE SET DEFAULT,
+	CONSTRAINT Enroll_PK PRIMARY KEY (sid, cid)
+);
+SELECT * FROM Enroll;
+
+DROP TABLE Students1;
+
+-- UPDATE A TABLE
+
+ALTER TABLE Students1
+	ADD COLUMN age INTEGER;
+	
+SELECT * FROM students1;
+
+-- INSERT A NEW DATA INTO A TABLE
+
+INSERT INTO Students1 (sid, name) VALUES (97779081, 'Parsa KamaliPour')
+
+UPDATE Students1
+	SET age = 22
+	WHERE sid = 97779081
+	
+DELETE FROM Students1
+	WHERE sid = 97779081
+	
+
