@@ -307,9 +307,84 @@ SELECT customer_name, borrower.loan_number, amount
 	FROM "Bank".borrower, "Bank".loan
 	WHERE borrower.loan_number = loan.loan_number AND branch_name = 'Pirouzi';
 	
+-- UNIVERSITY EXAMPLE
 
+SELECT title 
+	FROM University.courses;
+	
+SELECT *
+	FROM University.courses;
+	
+SELECT name
+	FROM University.courses, University.lecturers
+	where cid = '1413056' and lecturer = empid;
+	
+SELECT sid, mark
+	FROM university.assessment
+	WHERE mark BETWEEN 0 and 10;
+	
+SELECT sid
+	FROM university.enrolled
+	WHERE cid = '1413056' and grade in ('D', 'H');
 	
 	
+SELECT students.sid, name
+	FROM university.enrolled, university.students
+	WHERE cid = '1413056' AND grade IN ('D', 'H') AND students.sid = enrolled.sid
+	ORDER BY name;
+	
+-- Aggregate Functions
+
+SELECT COUNT(*) 
+	FROM university.enrolled;
+
+SELECT COUNT(DISTINCT sid)
+	FROM university.enrolled;
+	
+SELECT MAX(mark)
+	FROM university.assessment
+	WHERE cid = '1413056';
+
+SELECT AVG(mark)
+	FROM university.assessment
+	WHERE cid = '1413056';
+
+---  SET OPERATIONS 
+
+(SELECT customer_name FROM "Bank".depositor)
+	UNION
+	(SELECT customer_name FROM "Bank".borrower);
+
+(SELECT customer_name FROM "Bank".depositor)
+	UNION ALL
+	(SELECT customer_name FROM "Bank".borrower);
+	
+
+(SELECT customer_name FROM "Bank".depositor)
+	INTERSECT
+	(SELECT customer_name FROM "Bank".borrower);
 	
 	
+(SELECT customer_name FROM "Bank".depositor)
+	EXCEPT
+	(SELECT customer_name FROM "Bank".borrower);
+		
+
+SELECT name FROM university.students
+	UNION
+	SELECT name FROM university.lecturers;
+	
+	
+SELECT sid FROM university.students
+	EXCEPT
+	SELECT sid FROM university.enrolled;
+
+
+SELECT sid FROM university.enrolled WHERE cid = '1413056'
+	INTERSECT
+	SELECT sid FROM university.enrolled WHERE cid = '1413059';
+
+
+
+
 
