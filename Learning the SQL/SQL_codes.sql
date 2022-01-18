@@ -221,3 +221,46 @@ CREATE TABLE "university".Assessment(
 	CONSTRAINT Assessment_FK3 FOREIGN KEY (empid) REFERENCES "university".Lecturers (empid)
 );
 
+-- WHEN YOU INSERT AN INVALID VALUE
+
+INSERT INTO "university".Enrolled(sid, cid)
+	VALUES (917777, 134837);
+	
+UPDATE "university".students
+	SET sid = '999999'
+	WHERE sid = '10187440';
+
+UPDATE "university".students
+	SET sid = '95555555'
+	WHERE sid = '9214952';
+
+-- SORT
+
+SELECT customer_name
+	FROM "Bank".customer
+	WHERE customer_city = 'Rafsanjan'
+	ORDER BY customer_name DESC
+
+-- REMOVE DUPLICATE
+
+SELECT DISTINCT customer_city
+	FROM "Bank".customer
+	ORDER BY customer_city
+	
+SELECT ALL customer_city
+	FROM "Bank".customer
+
+-- SHOW ALL
+
+SELECT *
+	FROM "Bank".loan
+	ORDER BY loan_number ASC, branch_name ASC, amount ASC;
+	
+-- math op, rename
+
+SELECT amount*100 as "خخخخ", 'lol' as what_ever
+	FROM "Bank".loan
+	ORDER BY amount ASC;
+
+
+
