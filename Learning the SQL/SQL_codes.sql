@@ -519,6 +519,76 @@ SELECT name, cid, grade
 	FROM university.students S, university.enrolled E
 	WHERE S.sid = E.sid;
 
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E, employee.Employee S
+	WHERE E.supperssn = S.SSN;
+	
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E INNER JOIN employee.Employee S ON E.supperssn = S.SSN;
+	
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E LEFT OUTER JOIN employee.Employee S ON E.supperssn = S.SSN;
+	
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E RIGHT OUTER JOIN employee.Employee S ON E.supperssn = S.SSN;
+	
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E NATURAL RIGHT OUTER JOIN employee.Employee S;
+	
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E FULL OUTER JOIN employee.Employee S ON E.supperssn = S.SSN;
+
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E NATURAL JOIN employee.Employee S;
+	
+SELECT E.fname, E.lname, S.fname, S.lname
+	FROM employee.Employee E INNER JOIN employee.Employee S USING (supperssn , SSN);
+
+
+SELECT *
+	FROM university.students NATURAL JOIN university.enrolled;
+	
+SELECT *
+	FROM university.enrolled, university.students
+	WHERE students.sid = enrolled.sid;
+
+SELECT *
+	FROM university.courses CO INNER JOIN university.lecturers LE ON CO.lecturer = LE.empid
+	WHERE CO.cid = '1413056';
+	
+SELECT *
+	FROM university.courses CO NATURAL JOIN university.lecturers LE
+	WHERE CO.cid = '1413056';
+
+SELECT *
+	FROM employee.Employee E LEFT OUTER JOIN employee.dependent D ON E.SSN = D.ESSN; 
+
+
+
+SET search_path TO "Bank";
+
+SELECT account_number, B.branch_name
+	FROM branch B, account A
+	WHERE A.branch_name = B.branch_name;
+
+SELECT *
+	FROM loan NATURAL JOIN borrower;
+
+SELECT *
+	FROM loan INNER JOIN borrower USING (loan_number);
+
+SELECT *
+	FROM loan l INNER JOIN borrower b ON l.loan_number = b.loan_number;
+
+SELECT *
+	FROM customer NATURAL LEFT OUTER JOIN borrower;
+
+SELECT *
+	FROM customer LEFT OUTER JOIN borrower USING (customer_name);
+
+SELECT *
+	FROM customer C LEFT OUTER JOIN borrower B ON (C.customer_name = B.customer_name);
+
 
 
 
