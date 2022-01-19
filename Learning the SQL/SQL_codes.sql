@@ -591,4 +591,97 @@ SELECT *
 
 
 
+-------------------------------Nested Subqueries--------------------------------------
+
+SET search_path TO university;
+
+SELECT name
+	FROM students
+	WHERE sid IN (
+		SELECT sid
+		FROM enrolled
+		WHERE cid = '1413056'
+	);
+
+SELECT sid, name
+	FROM students
+	WHERE name IN (
+		SELECT name
+		FROM lecturers
+	);
+
+SELECT DISTINCT name
+	FROM students S, enrolled E
+	WHERE S.sid = E.sid
+		AND EXISTS (
+			SELECT *
+				FROM lecturers L, courses C
+				WHERE L.name = 'Ghanbari'
+					AND L.empid = C.lecturer
+					AND C.cid = E.cid
+	);
+
+
+SELECT DISTINCT name
+	FROM students S
+	WHERE S.sid IN (
+		SELECT E.sid
+		FROM enrolled E, lecturers L, courses C
+		WHERE L.name = 'Ghanbari'
+			AND L.empid = C.lecturer
+			AND C.cid = E.cid
+	);
+
+-----------------------------Set Comparison----------------------------------
+
+SET search_path TO sailor;
+
+SELECT S.sid, S.sname, S.rating
+	FROM sailors S
+	WHERE S.rating >= ALL (
+		SELECT S2.rating
+			FROM sailors S2
+	);
+	
+SELECT S.sid, S.sname, S.rating
+	FROM sailors S
+	WHERE S.rating > ANY (
+		SELECT S2.rating
+			FROM sailors S2
+	);
+	
+SELECT S.sid, S.sname, S.rating
+	FROM sailors S
+	WHERE S.rating > SOME (
+		SELECT S2.rating
+			FROM sailors S2
+	);
+
+
+SET search_path TO university;
+
+-- ALL, SOME, EXISTS, UNIQUE
+
+SELECT cid
+	FROM courses C
+	WHERE NOT EXISTS (
+		SELECT *
+			FROM enrolled E
+			WHERE E.cid = C.cid
+				AND grade IS NULL
+	);
+
+
+-- REPLACEMENT OF UNIQUE
+
+SELECT sid, name
+	FROM students S
+	WHERE 1 = (
+		SELECT COUNT(*)
+			FROM enrolled E
+			WHERE E.sid = S.sid
+	);
+
+
+
 
