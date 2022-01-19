@@ -683,5 +683,96 @@ SELECT sid, name
 	);
 
 
+SET search_path TO sailor;
+
+SELECT S.sname
+	FROM sailors S
+	WHERE S.sid IN (
+		SELECT R.sid
+			FROM reservations R
+			WHERE R.bid = '103'
+	);
+
+SELECT S.sname, R.day
+	FROM sailors S NATURAL JOIN reservations R
+	WHERE R.bid = '103';
+
+SELECT S.sname
+	FROM sailors S
+	WHERE EXISTS (
+		SELECT *
+			FROM reservations R
+			WHERE R.bid = '103' AND S.sid = R.sid
+	);
+
+SELECT *
+	FROM sailors S
+	WHERE S.rating > ANY (
+		SELECT MAX(S2.rating)
+			FROM sailors S2
+			WHERE S2.sname = 'horatio'
+	);
+
+SELECT S.sid, S.sname
+	FROM sailors S, boats B, reservations R
+	WHERE S.sid = R.sid AND R.bid = B.bid AND B.color = 'red'
+		AND S.sid IN (
+			SELECT R2.sid
+				FROM boats B2, reservations R2
+				WHERE R2.bid = B2.bid AND B2.color = 'green'
+		);
+
+
+--------------------------------GROUP------------------------------
+
+SET search_path TO university;
+
+SELECT cid, AVG(mark)
+	FROM assessment
+	GROUP BY cid;
+
+SELECT cid, AVG(mark)
+	FROM assessment
+	GROUP BY cid
+	HAVING AVG(mark) > 14;
+
+
+SET search_path TO sailor;
+
+SELECT S.rating, MIN(S.age)
+	FROM sailors S
+	WHERE S.age >= 18
+	GROUP BY S.rating
+	HAVING COUNT(S.rating) >= 2
+
+SELECT S.rating, MIN(S.age)
+	FROM sailors S
+	WHERE S.age >= 18
+	GROUP BY S.rating
+	HAVING COUNT(S.rating) >= 2 AND EVERY (S.age <= 60)
+
+SELECT S.rating, MIN(S.age)
+	FROM sailors S
+	WHERE S.age >= 18 AND S.age <= 60
+	GROUP BY S.rating
+	HAVING COUNT(S.rating) >= 2
+
+
+SELECT S.rating, MIN(S.age)
+	FROM sailors S
+	WHERE S.age >= 18
+	GROUP BY S.rating
+	HAVING 1 < (
+		SELECT COUNT(*)
+			FROM sailors S2
+			WHERE S.rating = S2.rating
+	);
+
+
+
+
+
+
+
 
 
