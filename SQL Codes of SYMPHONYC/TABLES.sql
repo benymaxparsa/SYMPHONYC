@@ -1,4 +1,6 @@
 
+-- Parsa KamaliPour 97149081
+
 SET search_path TO "SYMPHONYC";
 
 CREATE TABLE Users(
@@ -41,9 +43,11 @@ CREATE TABLE Albums(
 CREATE TABLE LikedAlbums(
 	username CHARACTER VARYING,
 	album_id CHARACTER VARYING,
+	user_given_score DOUBLE PRECISION,
 	CONSTRAINT LikedAlbums_PK PRIMARY KEY (album_id, username),
 	CONSTRAINT LikedAlbums_FK1 FOREIGN KEY (username) REFERENCES NormalUsers (username),
-	CONSTRAINT LikedAlbums_FK2 FOREIGN KEY (album_id) REFERENCES Albums (album_id)
+	CONSTRAINT LikedAlbums_FK2 FOREIGN KEY (album_id) REFERENCES Albums (album_id),
+	CONSTRAINT user_given_score_limit CHECK (user_given_score BETWEEN 0.0 AND 5.0)
 );
 
 CREATE TABLE Follows(
@@ -85,5 +89,40 @@ CREATE TABLE FollowedPlaylists(
 	CONSTRAINT user_given_score_limit CHECK (user_given_score BETWEEN 0.0 AND 5.0)
 );
 
+CREATE TABLE Songs(
+	song_id CHARACTER VARYING,
+	album_id CHARACTER VARYING,
+	title CHARACTER VARYING,
+	song_length TIME,
+	song_url CHARACTER VARYING,
+	number_of_times_played INTEGER,
+	CONSTRAINT Songs_PK PRIMARY KEY (song_id),
+	CONSTRAINT Songs_FK FOREIGN KEY (album_id) REFERENCES Albums (album_id)
+);
 
+CREATE TABLE LikedSongs(
+	username CHARACTER VARYING,
+	song_id CHARACTER VARYING,
+	user_given_score DOUBLE PRECISION,
+	CONSTRAINT LikedSongs_PK PRIMARY KEY (song_id, username),
+	CONSTRAINT LikedSongs_FK1 FOREIGN KEY (username) REFERENCES NormalUsers (username),
+	CONSTRAINT LikedSongs_FK2 FOREIGN KEY (song_id) REFERENCES Songs (song_id),
+	CONSTRAINT user_given_score_limit CHECK (user_given_score BETWEEN 0.0 AND 5.0)
+);
+
+CREATE TABLE PlaylistSongs(
+	playlist_id CHARACTER VARYING,
+	song_id CHARACTER VARYING,
+	CONSTRAINT PlaylistSongs_PK PRIMARY KEY (song_id, playlist_id),
+	CONSTRAINT PlaylistSongs_FK1 FOREIGN KEY (playlist_id) REFERENCES Playlists (playlist_id),
+	CONSTRAINT PlaylistSongs_FK2 FOREIGN KEY (song_id) REFERENCES Songs (song_id)
+);
+
+CREATE TABLE SongArtists(
+	artist_username CHARACTER VARYING,
+	song_id CHARACTER VARYING,
+	CONSTRAINT SongArtists_PK PRIMARY KEY (song_id, artist_username),
+	CONSTRAINT SongArtists_FK1 FOREIGN KEY (artist_username) REFERENCES Artists (username),
+	CONSTRAINT SongArtists_FK2 FOREIGN KEY (song_id) REFERENCES Songs (song_id)
+);
 
