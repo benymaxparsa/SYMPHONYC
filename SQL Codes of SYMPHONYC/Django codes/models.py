@@ -26,6 +26,7 @@ class Artist(models.Model):
         db_table = 'artist'
 
 
+
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
