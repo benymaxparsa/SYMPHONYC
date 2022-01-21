@@ -3,126 +3,126 @@
 
 SET search_path TO "SYMPHONYC";
 
-CREATE TABLE Users(
-	username CHARACTER VARYING UNIQUE,
-	name CHARACTER VARYING,
-	image_url CHARACTER VARYING,
-	password CHARACTER VARYING,
-	CONSTRAINT Users_PK PRIMARY KEY (username)
+CREATE TABLE User(
+	username CHARACTER VARYING(100) UNIQUE,
+	name CHARACTER VARYING(100),
+	image_url CHARACTER VARYING(100),
+	password CHARACTER VARYING(100),
+	CONSTRAINT User_PK PRIMARY KEY (username)
 );
 
 
-CREATE TABLE Artists(
-	username CHARACTER VARYING UNIQUE,
+CREATE TABLE Artist(
+	username CHARACTER VARYING(100) UNIQUE,
 	monthly_listeners INTEGER,
 	rank INTEGER UNIQUE,
-	social_media_url CHARACTER VARYING,
-	CONSTRAINT Artists_PK PRIMARY KEY (username),
-	CONSTRAINT Artists_FK FOREIGN KEY (username) REFERENCES Users (username)
+	social_media_url CHARACTER VARYING(100),
+	CONSTRAINT Artist_PK PRIMARY KEY (username),
+	CONSTRAINT Artist_FK FOREIGN KEY (username) REFERENCES User (username)
 );
 
-CREATE TABLE NormalUsers(
-	username CHARACTER VARYING UNIQUE,
-	last_played_song CHARACTER VARYING,
-	CONSTRAINT NormalUsers_PK PRIMARY KEY (username),
-	CONSTRAINT NormalUsers_FK FOREIGN KEY (username) REFERENCES Users (username)
+CREATE TABLE Normal_User(
+	username CHARACTER VARYING(100) UNIQUE,
+	last_played_song CHARACTER VARYING(100),
+	CONSTRAINT Normal_User_PK PRIMARY KEY (username),
+	CONSTRAINT Normal_User_FK FOREIGN KEY (username) REFERENCES User (username)
 );
 
-CREATE TABLE Albums(
-	album_id CHARACTER VARYING,
-	title CHARACTER VARYING,
-	artist_username CHARACTER VARYING,
+CREATE TABLE Album(
+	album_id CHARACTER VARYING(100),
+	title CHARACTER VARYING(100),
+	artist_username CHARACTER VARYING(100),
 	album_length TIME,
 	number_of_likes INTEGER,
-	image_url CHARACTER VARYING,
+	image_url CHARACTER VARYING(100),
 	release_date DATE,
-	CONSTRAINT Albums_PK PRIMARY KEY (album_id),
-	CONSTRAINT Albums_FK FOREIGN KEY (artist_username) REFERENCES Artists (username)
+	CONSTRAINT Album_PK PRIMARY KEY (album_id),
+	CONSTRAINT Album_FK FOREIGN KEY (artist_username) REFERENCES Artist (username)
 );
 
-CREATE TABLE LikedAlbums(
-	username CHARACTER VARYING,
-	album_id CHARACTER VARYING,
+CREATE TABLE Liked_Album(
+	username CHARACTER VARYING(100),
+	album_id CHARACTER VARYING(100),
 	user_given_score DOUBLE PRECISION,
-	CONSTRAINT LikedAlbums_PK PRIMARY KEY (album_id, username),
-	CONSTRAINT LikedAlbums_FK1 FOREIGN KEY (username) REFERENCES NormalUsers (username),
-	CONSTRAINT LikedAlbums_FK2 FOREIGN KEY (album_id) REFERENCES Albums (album_id),
+	CONSTRAINT Liked_Album_PK PRIMARY KEY (album_id, username),
+	CONSTRAINT Liked_Album_FK1 FOREIGN KEY (username) REFERENCES Normal_User (username),
+	CONSTRAINT Liked_Album_FK2 FOREIGN KEY (album_id) REFERENCES Album (album_id),
 	CONSTRAINT user_given_score_limit CHECK (user_given_score BETWEEN 0.0 AND 5.0)
 );
 
-CREATE TABLE Follows(
-	follower_username CHARACTER VARYING,
-	following_username CHARACTER VARYING,
+CREATE TABLE following_list(
+	follower CHARACTER VARYING(100),
+	target CHARACTER VARYING(100),
 	date_of_following DATE,
-	CONSTRAINT Follows_PK PRIMARY KEY (follower_username, following_username),
-	CONSTRAINT Follows_FK1 FOREIGN KEY (following_username) REFERENCES NormalUsers (username),
-	CONSTRAINT Follows_FK2 FOREIGN KEY (follower_username) REFERENCES NormalUsers (username)
+	CONSTRAINT following_list_PK PRIMARY KEY (follower, target),
+	CONSTRAINT following_list_FK1 FOREIGN KEY (follower) REFERENCES Normal_User (username),
+	CONSTRAINT following_list_FK2 FOREIGN KEY (target) REFERENCES Normal_User (username)
 );
 
-CREATE TABLE FavoriteArtists(
-	person_username CHARACTER VARYING,
-	artist_username CHARACTER VARYING,
+CREATE TABLE Favorite_Artist(
+	person_username CHARACTER VARYING(100),
+	artist_username CHARACTER VARYING(100),
 	date_of_following DATE,
-	CONSTRAINT FavoriteArtists_PK PRIMARY KEY (person_username, artist_username),
-	CONSTRAINT FavoriteArtists_FK1 FOREIGN KEY (person_username) REFERENCES NormalUsers (username),
-	CONSTRAINT FavoriteArtists_FK2 FOREIGN KEY (artist_username) REFERENCES Artists (username)
+	CONSTRAINT Favorite_Artist_PK PRIMARY KEY (person_username, artist_username),
+	CONSTRAINT Favorite_Artist_FK1 FOREIGN KEY (person_username) REFERENCES Normal_User (username),
+	CONSTRAINT Favorite_Artist_FK2 FOREIGN KEY (artist_username) REFERENCES Artist (username)
 );
 
-CREATE TABLE Playlists(
-	playlist_id CHARACTER VARYING,
-	creator_username CHARACTER VARYING,
-	title CHARACTER VARYING,
+CREATE TABLE Playlist(
+	playlist_id CHARACTER VARYING(100),
+	creator_username CHARACTER VARYING(100),
+	title CHARACTER VARYING(100),
 	number_of_followers INTEGER,
-	description CHARACTER VARYING,
-	image_url CHARACTER VARYING,
-	CONSTRAINT Playlists_PK PRIMARY KEY (playlist_id),
-	CONSTRAINT Playlists_FK FOREIGN KEY (creator_username) REFERENCES NormalUsers (username)
+	description CHARACTER VARYING(200),
+	image_url CHARACTER VARYING(100),
+	CONSTRAINT Playlist_PK PRIMARY KEY (playlist_id),
+	CONSTRAINT Playlist_FK FOREIGN KEY (creator_username) REFERENCES Normal_User (username)
 );
 
-CREATE TABLE FollowedPlaylists(
-	username CHARACTER VARYING,
-	playlist_id CHARACTER VARYING,
+CREATE TABLE Followed_Playlist(
+	username CHARACTER VARYING(100),
+	playlist_id CHARACTER VARYING(100),
 	user_given_score DOUBLE PRECISION,
-	CONSTRAINT FollowedPlaylists_PK PRIMARY KEY (playlist_id, username),
-	CONSTRAINT FollowedPlaylists_FK1 FOREIGN KEY (username) REFERENCES NormalUsers (username),
-	CONSTRAINT FollowedPlaylists_FK2 FOREIGN KEY (playlist_id) REFERENCES Playlists (playlist_id),
+	CONSTRAINT Followed_Playlist_PK PRIMARY KEY (playlist_id, username),
+	CONSTRAINT Followed_Playlist_FK1 FOREIGN KEY (username) REFERENCES Normal_User (username),
+	CONSTRAINT Followed_Playlist_FK2 FOREIGN KEY (playlist_id) REFERENCES Playlist (playlist_id),
 	CONSTRAINT user_given_score_limit CHECK (user_given_score BETWEEN 0.0 AND 5.0)
 );
 
-CREATE TABLE Songs(
-	song_id CHARACTER VARYING,
-	album_id CHARACTER VARYING,
-	title CHARACTER VARYING,
+CREATE TABLE Song(
+	song_id CHARACTER VARYING(100),
+	album_id CHARACTER VARYING(100),
+	title CHARACTER VARYING(100),
 	song_length TIME,
-	song_url CHARACTER VARYING,
+	song_url CHARACTER VARYING(100),
 	number_of_times_played INTEGER,
-	CONSTRAINT Songs_PK PRIMARY KEY (song_id),
-	CONSTRAINT Songs_FK FOREIGN KEY (album_id) REFERENCES Albums (album_id)
+	CONSTRAINT Song_PK PRIMARY KEY (song_id),
+	CONSTRAINT Song_FK FOREIGN KEY (album_id) REFERENCES Album (album_id)
 );
 
-CREATE TABLE LikedSongs(
-	username CHARACTER VARYING,
-	song_id CHARACTER VARYING,
+CREATE TABLE Liked_Song(
+	username CHARACTER VARYING(100),
+	song_id CHARACTER VARYING(100),
 	user_given_score DOUBLE PRECISION,
-	CONSTRAINT LikedSongs_PK PRIMARY KEY (song_id, username),
-	CONSTRAINT LikedSongs_FK1 FOREIGN KEY (username) REFERENCES NormalUsers (username),
-	CONSTRAINT LikedSongs_FK2 FOREIGN KEY (song_id) REFERENCES Songs (song_id),
+	CONSTRAINT Liked_Song_PK PRIMARY KEY (song_id, username),
+	CONSTRAINT Liked_Song_FK1 FOREIGN KEY (username) REFERENCES Normal_User (username),
+	CONSTRAINT Liked_Song_FK2 FOREIGN KEY (song_id) REFERENCES Song (song_id),
 	CONSTRAINT user_given_score_limit CHECK (user_given_score BETWEEN 0.0 AND 5.0)
 );
 
-CREATE TABLE PlaylistSongs(
-	playlist_id CHARACTER VARYING,
-	song_id CHARACTER VARYING,
-	CONSTRAINT PlaylistSongs_PK PRIMARY KEY (song_id, playlist_id),
-	CONSTRAINT PlaylistSongs_FK1 FOREIGN KEY (playlist_id) REFERENCES Playlists (playlist_id),
-	CONSTRAINT PlaylistSongs_FK2 FOREIGN KEY (song_id) REFERENCES Songs (song_id)
+CREATE TABLE Playlist_Song(
+	playlist_id CHARACTER VARYING(100),
+	song_id CHARACTER VARYING(100),
+	CONSTRAINT Playlist_Song_PK PRIMARY KEY (song_id, playlist_id),
+	CONSTRAINT Playlist_Song_FK1 FOREIGN KEY (playlist_id) REFERENCES Playlist (playlist_id),
+	CONSTRAINT Playlist_Song_FK2 FOREIGN KEY (song_id) REFERENCES Song (song_id)
 );
 
-CREATE TABLE SongArtists(
-	artist_username CHARACTER VARYING,
-	song_id CHARACTER VARYING,
-	CONSTRAINT SongArtists_PK PRIMARY KEY (song_id, artist_username),
-	CONSTRAINT SongArtists_FK1 FOREIGN KEY (artist_username) REFERENCES Artists (username),
-	CONSTRAINT SongArtists_FK2 FOREIGN KEY (song_id) REFERENCES Songs (song_id)
+CREATE TABLE song_feature_artist(
+	artist_username CHARACTER VARYING(100),
+	song_id CHARACTER VARYING(100),
+	CONSTRAINT song_feature_artist_PK PRIMARY KEY (song_id, artist_username),
+	CONSTRAINT song_feature_artist_FK1 FOREIGN KEY (artist_username) REFERENCES Artist (username),
+	CONSTRAINT song_feature_artist_FK2 FOREIGN KEY (song_id) REFERENCES Song (song_id)
 );
 
